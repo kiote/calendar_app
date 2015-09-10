@@ -1,1 +1,1 @@
-web: gunicorn -b 0.0.0.0:5001 calendar_app.wsgi --log-file -
+web: gunicorn calendar_app.wsgi --log-file -
