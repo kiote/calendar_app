@@ -87,6 +87,7 @@ if os.getenv('LOCAL_DEV', None):
 else:
     import dj_database_url
     DATABASES = {'default': dj_database_url.config()}
+    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 
 # Internationalization
