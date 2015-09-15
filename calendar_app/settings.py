@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'google_auth',
     'event_template',
+    'guser',
+    'added_event',
 )
 
 MIDDLEWARE_CLASSES = (
