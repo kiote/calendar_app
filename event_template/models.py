@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+
 ## {
 #   'summary': 'Programming Task',
 #   'location': 'http://www.path.to/study/website',
@@ -21,6 +22,7 @@ from django.utils import timezone
 #     ],
 #   },
 # },
+
 class EventTemplate(models.Model):
     summary = models.CharField(max_length=200)
     location = models.URLField(default='http://www.path.to/study/website')
@@ -29,5 +31,17 @@ class EventTemplate(models.Model):
     time_end = models.DateTimeField(default=timezone.now)
     event_data_json = models.CharField(max_length=4000, default='{}')
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        instance = super(EventTemplate, self)
+        self.event_data_json = self.to_json()
+        instance.save()
+        return instance
+
     def __str__(self):
         return self.summary
+
+    def to_json(self):
+        time_format = '%Y-%m-%dT%H:%M:%SZ'
+        return "{'summary': '%s', 'location': '%s', 'description': %s, 'start': {'dateTime': '%s'}, 'end': {'dateTime': '%s'}}" % \
+            (self.summary, self.location, self.description, self.time_start.strftime(time_format), self.time_end.strftime(time_format))
