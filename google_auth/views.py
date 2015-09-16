@@ -12,8 +12,6 @@ SCOPES = ['https://www.googleapis.com/auth/calendar', 'email', 'profile']
 
 
 class HomeView(TemplateView):
-    template_name = 'index.html'
-
     def get(self, request):
         if 'credentials' not in request.session:
             return redirect('callback')
@@ -21,7 +19,7 @@ class HomeView(TemplateView):
         if credentials.access_token_expired:
             return redirect('callback')
         else:
-            return render(request, 'google_auth/index.html')
+            return redirect('list')
 
 class AuthView(TemplateView):
     def get(self, request):

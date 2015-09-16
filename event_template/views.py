@@ -1,3 +1,13 @@
 from django.shortcuts import render
+from django.views.generic import TemplateView
+from django.template import RequestContext
 
-# Create your views here.
+from .models import EventTemplate
+
+class ListView(TemplateView):
+    template_name = 'index.html'
+
+    def get(self, request):
+        events = EventTemplate.objects.all()
+        context = RequestContext(request, {'events': events})
+        return render(request, 'event_template/index.html', context)

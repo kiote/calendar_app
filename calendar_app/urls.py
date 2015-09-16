@@ -17,9 +17,11 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from google_auth.views import HomeView
 from google_auth.views import AuthView
+from event_template.views import ListView
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^oauth2callback/', AuthView.as_view(), name='callback'),
+    url(r'^events/', ListView.as_view(), name='list'),
     url(r'^$', HomeView.as_view(), name='index')
 ]
