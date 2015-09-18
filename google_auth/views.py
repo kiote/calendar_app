@@ -1,5 +1,4 @@
 from django.shortcuts import redirect
-from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from oauth2client import client
