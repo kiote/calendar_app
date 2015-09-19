@@ -10,3 +10,6 @@ class AddedEvent(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     guser = models.ForeignKey(Guser)
     event = models.ForeignKey(EventTemplate)
+
+    def __str__(self):
+        self.guser.email + ': ' + self.event.summary
