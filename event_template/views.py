@@ -29,7 +29,9 @@ class SingleView(TemplateView):
         http_auth = credentials.authorize(httplib2.Http())
 
         # add or create user to database
-        user, created = Guser.objects.get_or_create(email=Guser.discover_email(http_auth))
+        email = Guser.discover_email(http_auth)
+        print email
+        user, created = Guser.objects.get_or_create(email=email)
 
         # create user attempt to add event to database
         event = EventTemplate.objects.get(id=int(event_id))
