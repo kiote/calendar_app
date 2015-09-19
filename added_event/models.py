@@ -12,4 +12,4 @@ class AddedEvent(models.Model):
     event = models.ForeignKey(EventTemplate)
 
     def __str__(self):
-        self.guser.email + ': ' + self.event.summary
+        return self.guser.email + ': ' + self.event.summary
