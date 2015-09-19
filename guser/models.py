@@ -14,3 +14,6 @@ class Guser(models.Model):
                                             http=http_auth)
         user_info = user_info_service.userinfo().get().execute()
         return user_info['email']
+
+    def __str__(self):
+        return self.email
