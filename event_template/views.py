@@ -30,12 +30,10 @@ class SingleView(TemplateView):
 
         # add or create user to database
         email = Guser.discover_email(http_auth)
-        print email
         user, created = Guser.objects.get_or_create(email=email)
 
         # create user attempt to add event to database
         event = EventTemplate.objects.get(id=int(event_id))
-        print event
         AddedEvent.objects.create(guser=user, event=event)
 
         # call google api to create event
