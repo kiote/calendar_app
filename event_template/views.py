@@ -1,5 +1,7 @@
-from oauth2client import client
 import httplib2
+import json
+
+from oauth2client import client
 from apiclient import discovery
 
 from django.shortcuts import render
@@ -37,7 +39,7 @@ class SingleView(TemplateView):
         AddedEvent.objects.create(guser=user, event=event)
 
         # call google api to create event
-        event_json = event.event_data_json
+        event_json = json.loads(event.event_data_json)
         service = discovery.build('calendar', 'v3', http=http_auth)
         service.events().insert(calendarId='primary',
                                 body=event_json).execute()

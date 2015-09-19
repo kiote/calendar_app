@@ -43,5 +43,5 @@ class EventTemplate(models.Model):
 
     def to_json(self):
         time_format = '%Y-%m-%dT%H:%M:%SZ'
-        return "{'summary': '%s', 'location': '%s', 'description': '%s', 'start': {'dateTime': '%s'}, 'end': {'dateTime': '%s'}}" % \
+        return '{"summary": "%s", "location": "%s", "description": "%s", "start": {"dateTime": "%s"}, "end": {"dateTime": "%s"}}' % \
             (self.summary, self.location, self.description, self.time_start.strftime(time_format), self.time_end.strftime(time_format))
