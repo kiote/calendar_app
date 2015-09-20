@@ -36,7 +36,7 @@ class SingleView(TemplateView):
 
         # create user attempt to add event to database
         event = EventTemplate.objects.get(id=int(event_id))
-        AddedEvent.objects.create(guser=user, event=event)
+        AddedEvent.objects.create(guser=user, event=event, credentials=request.session['credentials'])
 
         # call google api to create event
         event_json = json.loads(event.event_data_json)
