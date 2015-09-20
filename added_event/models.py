@@ -10,6 +10,9 @@ class AddedEvent(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     guser = models.ForeignKey(Guser)
     event = models.ForeignKey(EventTemplate)
+    updated_at = models.DateTimeField(default=timezone.now)
+    checked = models.BooleanField(default=False)
+    changed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.guser.email + ': ' + self.event.summary
