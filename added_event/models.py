@@ -39,10 +39,13 @@ class AddedEvent(models.Model):
     def was_changed(self):
         # get current event info
         credentials = client.OAuth2Credentials.from_json(self.credentials)
-        http_auth = credentials.authorize(httplib2.Http())
-        service = discovery.build('calendar', 'v3', http=http_auth)
-        remote_event = service.events().get(calendarId='primary',
-                                            eventId=self.event_id).execute()
+        try:
+            http_auth = credentials.authorize(httplib2.Http())
+            service = discovery.build('calendar', 'v3', http=http_auth)
+            remote_event = service.events().get(calendarId='primary',
+                                                eventId=self.event_id).execute()
+        except client.AccessTokenRefreshError:
+            return False
 
         # compare to event template
         internal_event = self.event
