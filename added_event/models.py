@@ -14,7 +14,7 @@ from event_template.models import EventTemplate
 class AddedEventManager(models.Manager):
     def check_same(self):
         """Check if event stays unchanged"""
-        unchecked_events = AddedEvent.object.filter(checked=False)
+        unchecked_events = AddedEvent.objects.filter(checked=False)
         for event in unchecked_events:
             if event.was_cahged():
                 event.changed = True
