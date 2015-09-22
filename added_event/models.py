@@ -32,6 +32,7 @@ class AddedEvent(models.Model):
     changed = models.BooleanField(default=False)
     credentials = models.CharField(max_length=6000, default='')
     objects = AddedEventManager()
+    google_event_id = models.CharField(max_length=2000, default='')
 
     def __str__(self):
         return self.guser.email + ': ' + self.event.summary
