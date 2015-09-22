@@ -11,6 +11,15 @@ from django.utils import timezone
 from guser.models import Guser
 from event_template.models import EventTemplate
 
+class AddedEventManager(models.Manager):
+    def check_same(self):
+        """Check if event stays unchanged"""
+        unchecked_events = AddedEvent.object.filter(checked=False)
+        for event in unchecked_events:
+            if event.was_cahged():
+                event.changed = True
+                event.save()
+
 class AddedEvent(models.Model):
     summary = models.CharField(max_length=2000)
     time_start = models.DateTimeField(default=timezone.now)
@@ -22,18 +31,10 @@ class AddedEvent(models.Model):
     checked = models.BooleanField(default=False)
     changed = models.BooleanField(default=False)
     credentials = models.CharField(max_length=6000, default='')
+    objects = AddedEventManager()
 
     def __str__(self):
         return self.guser.email + ': ' + self.event.summary
-
-    @staticmethod
-    def check_same():
-        """Check if event stays unchanged"""
-        unchecked_events = AddedEvent.object.filter(checked=False)
-        for event in unchecked_events:
-            if event.was_cahged():
-                event.changed = True
-                event.save()
 
     def was_changed(self):
         # get current event info
