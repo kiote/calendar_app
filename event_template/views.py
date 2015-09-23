@@ -34,6 +34,8 @@ class SingleView(TemplateView):
         email = Guser.discover_email(http_auth)
         user, created = Guser.objects.get_or_create(email=email)
 
+        event = EventTemplate.objects.get(id=int(event_id))
+
         # call google api to create event
         event_json = json.loads(event.event_data_json)
         service = discovery.build('calendar', 'v3', http=http_auth)
@@ -41,7 +43,6 @@ class SingleView(TemplateView):
                                 body=event_json).execute()
 
         # create user attempt to add event to database
-        event = EventTemplate.objects.get(id=int(event_id))
         AddedEvent.objects.create(guser=user,
                                   event=event,
                                   credentials=request.session['credentials'],
