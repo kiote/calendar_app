@@ -44,7 +44,7 @@ class AddedEvent(models.Model):
             http_auth = credentials.authorize(httplib2.Http())
             service = discovery.build('calendar', 'v3', http=http_auth)
             remote_event = service.events().get(calendarId='primary',
-                                                eventId=self.event_id).execute()
+                                                eventId=self.google_event_id).execute()
         except client.AccessTokenRefreshError:
             return False
 
