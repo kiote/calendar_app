@@ -16,9 +16,10 @@ class AddedEventManager(models.Manager):
         """Check if event stays unchanged"""
         unchecked_events = AddedEvent.objects.filter(checked=False)
         for event in unchecked_events:
+            event.checked = True
             if event.was_changed():
                 event.changed = True
-                event.save()
+            event.save()
 
 class AddedEvent(models.Model):
     summary = models.CharField(max_length=2000)

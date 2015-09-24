@@ -11,6 +11,8 @@ from .models import AddedEvent, AddedEventManager
 
 
 event = EventTemplate.objects.create(summary='test_event')
+user = Guser.objects.create(email='test@test.com')
+added_event = AddedEvent.objects.create(event=event, guser=user)
 
 class ServiceMock:
     def __init__(self, changed=True):
@@ -41,8 +43,7 @@ class ServiceMockUnchangedEvent(ServiceMock):
 
 class AddedEventTestCase(TestCase):
     def setUp(self):
-        self.subject = AddedEvent.objects.create(event=event,
-                                                 guser=Guser.objects.create(email='test@test.com'))
+        self.subject = added_event
 
     @mock.patch('added_event.models.client')
     @mock.patch('added_event.models.discovery.build', lambda a, b, http='': ServiceMockUnchangedEvent())
@@ -57,4 +58,13 @@ class AddedEventTestCase(TestCase):
 
 class AddedEventManagerTestCase(TestCase):
     def setUp(self):
-        self.subject = AddedEvent.objects.create(summary='Hi')
+        self.subject = AddedEvent.objects.create(event=EventTemplate.objects.create(summary='test_event'),
+                                                 guser=Guser.objects.create(email='test@test.com'))
+
+    @mock.patch('added_event.models.client')
+    @mock.patch('added_event.models.discovery.build', lambda a, b, http='': ServiceMockUnchangedEvent())
+    def test_check_same(self, mock):
+        """should change checked values"""
+        AddedEvent.objects.check_same()
+        self.subject.refresh_from_db()
+        self.assertTrue(self.subject.checked)
