@@ -1,3 +1,7 @@
+import json
+import datetime
+import mock
+
 from django.test import TestCase
 from django.utils import timezone
 
@@ -5,7 +9,6 @@ from event_template.models import EventTemplate
 from guser.models import Guser
 from .models import AddedEvent, AddedEventManager
 
-import mock
 
 event = EventTemplate.objects.create(summary='test_event')
 
@@ -19,9 +22,9 @@ class ServiceMock:
 
     def execute(self):
         if self.changed:
-            self.event.time_start = timezone.now + 1000
+            self.event.time_start = timezone.now() + datetime.timedelta(0, 10)
             self.event.save
-        return self.event.event_data_json
+        return json.loads(self.event.event_data_json)
 
 
 class ServiceMockChangedEvent(ServiceMock):
@@ -45,6 +48,11 @@ class AddedEventTestCase(TestCase):
     @mock.patch('added_event.models.discovery.build', lambda a, b, http='': ServiceMockUnchangedEvent())
     def test_was_changed_false(self, mock):
         self.assertFalse(self.subject.was_changed())
+
+    @mock.patch('added_event.models.client')
+    @mock.patch('added_event.models.discovery.build', lambda a, b, http='': ServiceMockChangedEvent())
+    def test_was_changed_false(self, mock):
+        self.assertTrue(self.subject.was_changed())
 
 
 class AddedEventManagerTestCase(TestCase):

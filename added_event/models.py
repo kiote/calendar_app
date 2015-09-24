@@ -50,13 +50,16 @@ class AddedEvent(models.Model):
 
         # compare to event template
         internal_event = self.event
-        if self.toUTC(remote_event['start']['dateTime']) != self.toUTC(internal_event.time_start):
+        if self.toUTC(remote_event['start']['dateTime']) != self.toUTC(str(internal_event.time_start)):
             return True
         return False
 
     @staticmethod
     def toUTC(time):
-        time_converted = datetime.strptime(time[0:19], '%Y-%m-%dT%H:%M:%S')
+        try:
+            time_converted = datetime.strptime(time[0:19], '%Y-%m-%dT%H:%M:%S')
+        except ValueError:
+            time_converted = datetime.strptime(time[0:19], '%Y-%m-%d %H:%M:%S')
 
         if len(time) > 20:
             offset = int(time[-6:][0:3])
