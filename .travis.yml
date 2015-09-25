@@ -5,12 +5,12 @@ python:
 
 env:
   - DJANGO_VERSION=1.8.4
-  - BUILD_ON_TRAVIS=true
-  - PYTHONPATH="/home/travis/build/kiote/calendar_app"
-  - PIP_USE_MIRRORS=true
 
 before_install:
   - export DJANGO_SETTINGS_MODULE=calendar_app.settings
+  - export PIP_USE_MIRRORS=true
+  - export PYTHONPATH="/home/travis/build/kiote/calendar_app"
+  - export BUILD_ON_TRAVIS=true
 
 install:
   - pip install -q Django==$DJANGO_VERSION
