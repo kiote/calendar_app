@@ -1,0 +1,25 @@
+language: python
+
+python:
+  - "2.7"
+
+env:
+  - DJANGO_VERSION=1.8.4
+  - BUILD_ON_TRAVIS=true
+  - PYTHONPATH="/home/travis/build/kiote/calendar_app"
+  - PIP_USE_MIRRORS=true
+
+ before_install:
+  - export DJANGO_SETTINGS_MODULE=calendar_app.settings
+
+install:
+  - pip install -q Django==$DJANGO_VERSION
+  - python setup.py -q install
+  - pip install .
+  - pip install -r requirements.txt
+
+before_script:
+  - psql -c "CREATE DATABASE mydb;" -U postgres
+  - python manage.py migrate
+
+script: python manage.py tests

@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'calendar_app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-if os.getenv('LOCAL_DEV', None):
+if os.getenv('LOCAL_DEV', False):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -87,6 +87,17 @@ if os.getenv('LOCAL_DEV', None):
         }
     }
     STATIC_ROOT = 'staticfiles'
+elif os.getenv('BUILD_ON_TRAVIS', False):
+    DATABASES = {
+        'default': {
+            'ENGINE':   'django.db.backends.postgresql_psycopg2',
+            'NAME':     'travisci',
+            'USER':     'postgres',
+            'PASSWORD': '',
+            'HOST':     'localhost',
+            'PORT':     '',
+        }
+    }
 else:
     import dj_database_url
     DATABASES = {'default': dj_database_url.config()}
