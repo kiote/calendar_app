@@ -9,7 +9,7 @@ env:
   - PYTHONPATH="/home/travis/build/kiote/calendar_app"
   - PIP_USE_MIRRORS=true
 
- before_install:
+before_install:
   - export DJANGO_SETTINGS_MODULE=calendar_app.settings
 
 install:
