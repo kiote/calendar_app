@@ -15,11 +15,13 @@ class AddedEventManager(models.Manager):
     def check_same(self):
         """Check if event stays unchanged"""
         unchecked_events = AddedEvent.objects.filter(checked=False)
-        for event in unchecked_events:
-            event.checked = True
-            if event.was_changed():
-                event.changed = True
-            event.save()
+        for added_event in unchecked_events:
+            print "Checking event %s for user %s..." % (added_event.event, added_event.guser)
+            added_event.checked = True
+            if added_event.was_changed():
+                print "Event %s:%s was changed" % (added_event.event, added_event.guser)
+                added_event.changed = True
+            added_event.save()
 
 class AddedEvent(models.Model):
     summary = models.CharField(max_length=2000)
@@ -47,12 +49,17 @@ class AddedEvent(models.Model):
             remote_event = service.events().get(calendarId='primary',
                                                 eventId=self.google_event_id).execute()
         except client.AccessTokenRefreshError:
+            print "Event %s:%s - token expired" % (self.event, self.guser)
             return False
 
         # compare to event template
         internal_event = self.event
+        print "Event %s:%s - checking dates..." % (self.event, self.guser)
         if self.toUTC(remote_event['start']['dateTime']) != self.toUTC(str(internal_event.time_start)):
+            print "Event %s:%s - different starttime" % (self.event, self.guser)
             return True
+        else:
+            print "Event %s:%s - same starttime" % (self.event, self.guser)
         return False
 
     @staticmethod
