@@ -20,4 +20,4 @@ before_script:
   - psql -c "CREATE DATABASE travisci;" -U postgres
   - python manage.py migrate
 
-script: python manage.py tests
+script: python manage.py test
