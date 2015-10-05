@@ -18,9 +18,11 @@ class AddedEventManager(models.Manager):
         for added_event in unchecked_events:
             print "Checking event %s for user %s..." % (added_event.event, added_event.guser)
             added_event.checked = True
+            added_event.obtain_remote_event()
             if added_event.was_changed():
                 print "Event %s:%s was changed" % (added_event.event, added_event.guser)
                 added_event.changed = True
+                added_event.time_start_changed_to = added_event.remote_event['start']['dateTime']
             added_event.save()
 
 class AddedEvent(models.Model):
@@ -36,26 +38,35 @@ class AddedEvent(models.Model):
     credentials = models.CharField(max_length=6000, default='')
     objects = AddedEventManager()
     google_event_id = models.CharField(max_length=2000, default='')
+    time_start_changed_to = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.guser.email + ': ' + self.event.summary
 
-    def was_changed(self):
+    def obtain_remote_event(self):
         # get current event info
         credentials = client.OAuth2Credentials.from_json(self.credentials)
         try:
             http_auth = credentials.authorize(httplib2.Http())
             service = discovery.build('calendar', 'v3', http=http_auth)
-            remote_event = service.events().get(calendarId='primary',
-                                                eventId=self.google_event_id).execute()
+            self.remote_event = service.events().get(calendarId='primary',
+                                                     eventId=self.google_event_id).execute()
+            return True
         except client.AccessTokenRefreshError:
             print "Event %s:%s - token expired" % (self.event, self.guser)
+            return False
+
+
+    def was_changed(self):
+        remote_event = self.obtain_remote_event()
+
+        if not remote_event:
             return False
 
         # compare to event template
         internal_event = self.event
         print "Event %s:%s - checking dates..." % (self.event, self.guser)
-        if self.toUTC(remote_event['start']['dateTime']) != self.toUTC(str(internal_event.time_start)):
+        if self.toUTC(self.remote_event['start']['dateTime']) != self.toUTC(str(internal_event.time_start)):
             print "Event %s:%s - different starttime" % (self.event, self.guser)
             return True
         else:
