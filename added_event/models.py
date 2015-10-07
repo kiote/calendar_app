@@ -22,6 +22,7 @@ class AddedEventManager(models.Manager):
             if added_event.was_changed():
                 print "Event %s:%s was changed" % (added_event.event, added_event.guser)
                 added_event.changed = True
+                print added_event.remote_event['start']['dateTime']
                 added_event.time_start_changed_to = added_event.remote_event['start']['dateTime']
             added_event.save()
 
