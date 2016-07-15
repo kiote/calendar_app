@@ -23,6 +23,7 @@ from django.utils import timezone
 #   },
 # },
 
+
 class EventTemplate(models.Model):
     summary = models.CharField(max_length=200)
     location = models.URLField(default='http://www.path.to/study/website')

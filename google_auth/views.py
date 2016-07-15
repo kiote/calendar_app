@@ -20,6 +20,7 @@ class HomeView(TemplateView):
         else:
             return redirect('list')
 
+
 class AuthView(TemplateView):
     def get(self, request):
         flow = client.flow_from_clientsecrets(

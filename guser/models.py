@@ -3,6 +3,7 @@ from django.utils import timezone
 
 from apiclient import discovery
 
+
 class Guser(models.Model):
     email = models.EmailField()
     created_at = models.DateTimeField(default=timezone.now)
