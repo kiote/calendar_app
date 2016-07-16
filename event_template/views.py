@@ -14,11 +14,13 @@ from .models import EventTemplate
 from guser.models import Guser
 from added_event.models import AddedEvent
 
+
 class ListView(TemplateView):
     def get(self, request):
         events = EventTemplate.objects.all()
         context = RequestContext(request, {'events': events})
         return render(request, 'event_template/index.html', context)
+
 
 class SingleView(TemplateView):
     def get(self, request, event_id):

@@ -1,5 +1,8 @@
+from calendar_app.settings import HOST_NAME
+
 from django.db import models
 from django.utils import timezone
+from django.core import urlresolvers
 
 ## {
 #   'summary': 'Programming Task',
@@ -31,6 +34,11 @@ class EventTemplate(models.Model):
     time_start = models.DateTimeField(default=timezone.now)
     time_end = models.DateTimeField(default=timezone.now)
     event_data_json = models.CharField(max_length=4000, default='{}')
+
+    def link_to_event(self):
+        host = HOST_NAME
+        url = urlresolvers.reverse('single_event', args=(self.id,))
+        return '{}{}'.format(host, url)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):

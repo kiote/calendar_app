@@ -11,6 +11,7 @@ from django.utils import timezone
 from guser.models import Guser
 from event_template.models import EventTemplate
 
+
 class AddedEventManager(models.Manager):
     def check_same(self):
         """Check if event stays unchanged"""
@@ -25,6 +26,7 @@ class AddedEventManager(models.Manager):
                 print added_event.remote_event['start']['dateTime']
                 added_event.time_start_changed_to = added_event.remote_event['start']['dateTime']
             added_event.save()
+
 
 class AddedEvent(models.Model):
     summary = models.CharField(max_length=2000)
@@ -56,7 +58,6 @@ class AddedEvent(models.Model):
         except client.AccessTokenRefreshError:
             print "Event %s:%s - token expired" % (self.event, self.guser)
             return False
-
 
     def was_changed(self):
         remote_event = self.obtain_remote_event()
