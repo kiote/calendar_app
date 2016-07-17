@@ -23,7 +23,7 @@ class HomeView(TemplateView):
 
 class AuthView(TemplateView):
     def get(self, request):
-        redirect_uri = request.GET['state']
+        redirect_uri = request.session['redirect_uri']
 
         flow = client.flow_from_clientsecrets(
             'client_secrets.json',
