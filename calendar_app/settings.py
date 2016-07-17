@@ -23,13 +23,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'lyx@ov^ouy3%x5z50j0jl9@4z)9x#2_2(tuegbbm@v2#zwop(d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
 if os.getenv('LOCAL_DEV', False):
+    DEBUG = True
     HOST_NAME = '127.0.0.1'
 else:
+    DEBUG = False
     HOST_NAME = 'https://gcalendar-api-events.herokuapp.com'
 
 
