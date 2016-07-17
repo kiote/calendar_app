@@ -30,7 +30,7 @@ class AuthView(TemplateView):
         flow = client.flow_from_clientsecrets(
             'client_secrets.json',
             scope=' '.join(SCOPES),
-            redirect_uri=redirect_uri)
+            redirect_uri='https://gcalendar-api-events.herokuapp.com/oauth2callback')
         if 'code' not in request.GET:
             auth_uri = flow.step1_get_authorize_url()
             return redirect(auth_uri)
@@ -41,4 +41,4 @@ class AuthView(TemplateView):
                 request.session['credentials'] = credentials.to_json()
             except errors.HttpError, e:
                 logging.error('An error occurred: %s', e)
-            return redirect('index')
+            return redirect(redirect_uri)
