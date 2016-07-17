@@ -7,6 +7,8 @@ from oauth2client import client
 from apiclient import errors
 import logging
 
+from calendar_app.settings import HOST_NAME
+
 
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'email', 'profile']
 
@@ -30,7 +32,7 @@ class AuthView(TemplateView):
         flow = client.flow_from_clientsecrets(
             'client_secrets.json',
             scope=' '.join(SCOPES),
-            redirect_uri='https://gcalendar-api-events.herokuapp.com/oauth2callback')
+            redirect_uri='{}{}'.format(HOST_NAME, '/oauth2callback'))
         if 'code' not in request.GET:
             auth_uri = flow.step1_get_authorize_url()
             return redirect(auth_uri)
