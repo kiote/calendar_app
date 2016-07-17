@@ -46,3 +46,8 @@ Finally, you need to run migrations to have all tables in place:
 Also you'd probably need some libraries installed from ```requirements.txt```. You can simply copy all that file to your own ```requirements.txt``` and manually handle comflicts (if any). Then run ```pip install -r requirements.txt```
 
 Now you are ready to go with GCalendar app functionality included to your application!
+
+### User's manual
+
+* [Admin user manual](https://github.com/kiote/calendar_app/wiki/Admin-User-Manual)
+* [Regular user manual](https://github.com/kiote/calendar_app/wiki/Regular-User-Manual)
