@@ -25,8 +25,8 @@ class ListView(TemplateView):
 class SingleView(TemplateView):
     def get(self, request, event_id):
         """this action adds event to user's calendar"""
-        request.session['redirect_uri'] = 'http://{}{}'.format(request.get_host(),
-                                                               request.get_full_path())
+        request.session['event_id'] = event_id
+
         if 'credentials' not in request.session:
             return redirect('callback')
         credentials = client.OAuth2Credentials.from_json(request.session['credentials'])

@@ -1,4 +1,5 @@
 from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 
 from oauth2client import client
@@ -23,7 +24,8 @@ class HomeView(TemplateView):
 
 class AuthView(TemplateView):
     def get(self, request):
-        redirect_uri = request.session['redirect_uri']
+        event_id = request.session['event_id']
+        redirect_uri = 'https://{}{}'.format(request.get_host(), reverse('single_event', args=(event_id,)))
 
         flow = client.flow_from_clientsecrets(
             'client_secrets.json',
