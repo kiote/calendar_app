@@ -25,11 +25,16 @@ class ListView(TemplateView):
 class SingleView(TemplateView):
     def get(self, request, event_id):
         """this action adds event to user's calendar"""
+        redirect_uri = '?redirect_uri=http://{}{}'.format(request.get_host(),
+                                                          request.get_full_path())
+        response = redirect('callback')
+        response['Location'] += redirect_uri
+
         if 'credentials' not in request.session:
-            return redirect('callback')
+            return response
         credentials = client.OAuth2Credentials.from_json(request.session['credentials'])
         if credentials.access_token_expired:
-            return redirect('callback')
+            return response
         http_auth = credentials.authorize(httplib2.Http())
 
         # add or create user to database

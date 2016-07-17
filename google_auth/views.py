@@ -23,10 +23,12 @@ class HomeView(TemplateView):
 
 class AuthView(TemplateView):
     def get(self, request):
+        redirect_uri = request.GET['redirect_uri']
+
         flow = client.flow_from_clientsecrets(
             'client_secrets.json',
             scope=' '.join(SCOPES),
-            redirect_uri='https://gcalendar-api-events.herokuapp.com/oauth2callback')
+            redirect_uri=redirect_uri)
         if 'code' not in request.GET:
             auth_uri = flow.step1_get_authorize_url()
             return redirect(auth_uri)
