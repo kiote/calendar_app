@@ -24,7 +24,7 @@ SECRET_KEY = 'lyx@ov^ouy3%x5z50j0jl9@4z)9x#2_2(tuegbbm@v2#zwop(d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 if os.getenv('LOCAL_DEV', False):
     DEBUG = True
