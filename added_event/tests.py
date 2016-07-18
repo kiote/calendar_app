@@ -14,6 +14,7 @@ event = EventTemplate.objects.create(summary='test_event')
 user = Guser.objects.create(email='test@test.com')
 added_event = AddedEvent.objects.create(event=event, guser=user)
 
+
 class ServiceMock:
     def __init__(self, changed=True):
         self.changed = changed
