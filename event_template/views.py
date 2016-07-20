@@ -8,6 +8,7 @@ from apiclient import discovery
 
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
+from django.utils import timezone
 
 from event_template.models import EventTemplate
 from guser.models import Guser
@@ -82,6 +83,7 @@ class SingleView(TemplateView):
         AddedEvent.objects.create(guser=user,
                                   event=event,
                                   credentials=request.session['credentials'],
-                                  google_event_id=created_event.get('id'))
+                                  google_event_id=created_event.get('id'),
+                                  created_at=timezone.now())
 
         return redirect(created_event.get('htmlLink'))
