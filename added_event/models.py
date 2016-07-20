@@ -41,7 +41,7 @@ class AddedEvent(models.Model):
     credentials = models.CharField(max_length=6000, default='')
     objects = AddedEventManager()
     google_event_id = models.CharField(max_length=2000, default='')
-    time_start_changed_to = models.DateTimeField(default=timezone.now)
+    time_start_changed_to = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.guser.email + ': ' + self.event.summary
