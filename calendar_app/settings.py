@@ -31,7 +31,7 @@ if os.getenv('LOCAL_DEV', False):
     DEBUG = True
     HOST_NAME = '127.0.0.1'
 else:
-    DEBUG = False
+    DEBUG = True
     TEMPLATE_DEBUG = True
     HOST_NAME = 'https://gcalendar-api-events.herokuapp.com'
 
